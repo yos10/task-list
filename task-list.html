@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>やったことリスト</title>
+    <link rel="stylesheet" href="task-list.css" />
+    <script src="task-list.js" defer></script>
+  </head>
+
+  <body>
+    <h1>期末面談用やったことリスト</h1>
+    <div class="inputarea">
+      <p>実施月、進捗、タイトル、タスク概要を入力してください</p>
+      <form id="form">
+        <div class="row">
+          <input id="taskmonth" type="month" value="2022-04" required />
+          <select id="taskstatus">
+            <option value="済">済</option>
+            <option value="未">未</option>
+          </select>
+          <button id="submit" type="submit">登録</button>
+        </div>
+        <div class="row">
+          <input type="text" id="tasktitle" placeholder="タイトル" value="タイトルです" required />
+        </div>
+        <div class="row">
+          <textarea
+            id="taskdetail"
+            rows="5"
+            placeholder="タスク概要"
+            required
+          >タスクの概要です</textarea>
+        </div>
+      </form>
+    </div>
+    <div class="tasklistarea">
+      <table>
+        <thead>
+          <tr>
+            <th>実施月</th>
+            <th>進捗</th>
+            <th>タイトル</th>
+            <th>タスク概要</th>
+            <th>削除</th>
+          </tr>
+        </thead>
+        <tbody id="tasklist"></tbody>
+      </table>
+    </div>
+  </body>
+</html>

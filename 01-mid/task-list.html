@@ -15,15 +15,15 @@
       <p>実施月、進捗、タイトル、タスク概要を入力してください</p>
       <form id="form">
         <div class="row">
-          <input id="taskmonth" type="month" value="2022-04" required />
-          <select id="taskstatus">
+          <input id="taskmonth" type="month" required />
+          <select id="taskstatus" required>
             <option value="済">済</option>
             <option value="未">未</option>
           </select>
           <button id="submit" type="submit">登録</button>
         </div>
         <div class="row">
-          <input type="text" id="tasktitle" placeholder="タイトル" value="タイトルです" required />
+          <input type="text" id="tasktitle" placeholder="タイトル" required />
         </div>
         <div class="row">
           <textarea
@@ -31,7 +31,7 @@
             rows="5"
             placeholder="タスク概要"
             required
-          >タスクの概要です</textarea>
+          ></textarea>
         </div>
       </form>
     </div>
@@ -47,13 +47,13 @@
           </tr>
         </thead>
         <tbody id="tasklist">
-          <tr class="taskrow">
+          <!-- <tr class="taskrow">
             <td>2021-07</td>
             <td>済</td>
             <td>A社経営統合プロジェクト</td>
             <td>経営統合に伴う業務プロセス統合プロジェクト。<br>プロジェクトリーダー（メンバー４人）として担当。<br>ＱＤＣ目標いずれも達成。ＣＳ評価で５をいただいた。</td>
             <td><button>削除</button></td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>

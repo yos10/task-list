@@ -8,6 +8,10 @@ function addTask(task) {
   tasks.push(task);
 }
 
+/**
+ * 
+ * @param {string} id 
+ */
 function deleteTask(id) {
   const deletedTasks = getTasks().filter(task => task.id !== id);
 
@@ -21,11 +25,14 @@ function createHtmlElement(html) {
   return template.content.firstElementChild;
 }
 
+function removeHtmlElement(querySelector) {
+  document.querySelectorAll(querySelector).forEach(e => e.remove());
+}
+
 function displayTaskList () {
+  removeHtmlElement('.taskrow');
+
   const tasks = getTasks();
-
-  document.querySelectorAll('.taskrow').forEach(e => e.remove());
-
   tasks.forEach(t => {
     const html = `
       <tr class="taskrow">
@@ -42,23 +49,47 @@ function displayTaskList () {
 }
 
 function addSample() {
-
+  const task = {
+    id: '1',
+    taskmonth: '2021-07',
+    taskstatus: '済',
+    tasktitle: 'A社経営統合プロジェクト',
+    taskdetail: '経営統合に伴う業務プロセス統合プロジェクト。<br>プロジェクトリーダー（メンバー４人）として担当。<br>ＱＤＣ目標いずれも達成。ＣＳ評価で５をいただいた。'
+  }
+  addTask(task);
+  displayTaskList();
 }
 
 const form = document.querySelector('#form');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formElements = Array.from(form.elements).filter(element => element.id !== 'submit');
   const task = {};
-
+  
+  const formElements = Array.from(form.elements).filter(element => element.id !== 'submit');
   for (const element of formElements) {
     const elementId = element.id;
     const value = element.value;
     task[elementId] = value;
+
+    // 入力エリアを初期化
+    element.value = ''
   }
 
-  task['id'] = Date.now();
+  task['id'] = Date.now().toString();
 
   addTask(task);
+  displayTaskList();
 });
+
+const tasklist = document.querySelector('#tasklist');
+// Event Delegation
+tasklist.addEventListener('click', (e) => {
+  if (e.target.matches('button')) {
+    const id = e.target.dataset.id;
+    deleteTask(id);
+    displayTaskList();
+  }
+});
+
+addSample();

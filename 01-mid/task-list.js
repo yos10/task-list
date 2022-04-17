@@ -40,7 +40,7 @@ function displayTaskList() {
         <td>${t.taskstatus}</td>
         <td>${t.tasktitle}</td>
         <td>${t.taskdetail}</td>
-        <td><button data-id="${t.id}">削除</button></td>
+        <td><button class="btn-sm btn-dark" data-id="${t.id}">削除</button></td>
       </tr>
     `;
     const task = createHtmlElement(html);

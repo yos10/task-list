@@ -33,18 +33,23 @@ function displayTaskList() {
   removeHtmlElement('.taskrow');
 
   const tasks = getTasks();
-  tasks.forEach((t) => {
+  tasks.forEach((task) => {
     const html = `
       <tr class="taskrow">
-        <td>${t.taskmonth}</td>
-        <td>${t.taskstatus}</td>
-        <td>${t.tasktitle}</td>
-        <td>${t.taskdetail}</td>
-        <td><button class="btn-sm btn-dark" data-id="${t.id}">削除</button></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><button class="btn-sm btn-dark" data-id="${task.id}">削除</button></td>
       </tr>
     `;
-    const task = createHtmlElement(html);
-    document.querySelector('#tasklist').appendChild(task);
+    const tableRow = createHtmlElement(html);
+    const td = tableRow.querySelectorAll('td');
+    td[0].textContent = task.taskmonth;
+    td[1].textContent = task.taskstatus;
+    td[2].textContent = task.tasktitle;
+    td[3].textContent = task.taskdetail;
+    document.querySelector('#tasklist').appendChild(tableRow);
   });
 }
 

@@ -1,11 +1,17 @@
-let tasks = [];
+const localstorageName = 'tasks';
 
 function getTasks() {
-  return JSON.parse(JSON.stringify(tasks) || '[]');
+  return JSON.parse(localStorage.getItem(localstorageName) || '[]');
+}
+
+function setItem(tasks) {
+  localStorage.setItem(localstorageName, JSON.stringify(tasks));
 }
 
 function addTask(task) {
+  const tasks = getTasks();
   tasks.push(task);
+  setItem(tasks);
 }
 
 /**
@@ -15,7 +21,7 @@ function addTask(task) {
 function deleteTask(id) {
   const filteredTasks = getTasks().filter((task) => task.id !== id);
 
-  tasks = filteredTasks;
+  setItem(filteredTasks);
 }
 
 function createHtmlElement(html) {
@@ -102,4 +108,9 @@ tasklist.addEventListener('click', (e) => {
   }
 });
 
-addSample();
+window.addEventListener('DOMContentLoaded', (e) => {
+  if (getTasks().length === 0) {
+    addSample();
+  }
+  displayTaskList();
+});

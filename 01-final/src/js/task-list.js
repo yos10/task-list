@@ -1,28 +1,4 @@
-const localstorageName = 'tasks';
-
-function getTasks() {
-  return JSON.parse(localStorage.getItem(localstorageName) || '[]');
-}
-
-function setItem(tasks) {
-  localStorage.setItem(localstorageName, JSON.stringify(tasks));
-}
-
-function addTask(task) {
-  const tasks = getTasks();
-  tasks.push(task);
-  setItem(tasks);
-}
-
-/**
- *
- * @param {string} id
- */
-function deleteTask(id) {
-  const filteredTasks = getTasks().filter((task) => task.id !== id);
-
-  setItem(filteredTasks);
-}
+import * as repo from './task-list-repository.js';
 
 function createHtmlElement(html) {
   const template = document.createElement('template');
@@ -38,7 +14,7 @@ function removeHtmlElement(querySelector) {
 function displayTaskList() {
   removeHtmlElement('.taskrow');
 
-  const tasks = getTasks();
+  const tasks = repo.getTasks();
   tasks.forEach((task) => {
     const html = `
       <tr class="taskrow">
@@ -68,7 +44,7 @@ function addSample() {
     taskdetail:
       '経営統合に伴う業務プロセス統合プロジェクト。<br>プロジェクトリーダー（メンバー４人）として担当。<br>ＱＤＣ目標いずれも達成。ＣＳ評価で５をいただいた。',
   };
-  addTask(task);
+  repo.addTask(task);
   displayTaskList();
 }
 
@@ -84,8 +60,8 @@ form.addEventListener('submit', (e) => {
   );
   for (const element of formElements) {
     const elementId = element.id;
-    const value = element.value;
-    task[elementId] = value;
+    const elementValue = element.value;
+    task[elementId] = elementValue;
 
     // 入力エリアを初期化
     element.value = '';
@@ -93,7 +69,7 @@ form.addEventListener('submit', (e) => {
 
   task['id'] = Date.now().toString();
 
-  addTask(task);
+  repo.addTask(task);
   displayTaskList();
 });
 
@@ -103,13 +79,14 @@ const tasklist = document.querySelector('#tasklist');
 tasklist.addEventListener('click', (e) => {
   if (e.target.matches('button')) {
     const id = e.target.dataset.id;
-    deleteTask(id);
+    repo.deleteTask(id);
     displayTaskList();
   }
 });
 
 window.addEventListener('DOMContentLoaded', (e) => {
-  if (getTasks().length === 0) {
+  const tasks = repo.getTasks();
+  if (tasks.length === 0) {
     addSample();
   }
   displayTaskList();

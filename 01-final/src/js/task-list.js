@@ -8,7 +8,10 @@ function createHtmlElement(html) {
 }
 
 function removeHtmlElement(querySelector) {
-  document.querySelectorAll(querySelector).forEach((e) => e.remove());
+  const nodeList = document.querySelectorAll(querySelector);
+  for (const node of nodeList) {
+    node.remove();
+  }
 }
 
 function displayTaskList() {

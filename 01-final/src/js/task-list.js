@@ -18,7 +18,7 @@ function displayTaskList() {
   removeHtmlElement('.taskrow');
 
   const tasks = repo.getTasks();
-  tasks.forEach((task) => {
+  for (const task of tasks) {
     const html = `
       <tr class="taskrow">
         <td></td>
@@ -35,7 +35,7 @@ function displayTaskList() {
     td[2].textContent = task.tasktitle;
     td[3].textContent = task.taskdetail;
     document.querySelector('#tasklist').appendChild(tableRow);
-  });
+  }
 }
 
 function addSample() {
@@ -91,6 +91,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
   const tasks = repo.getTasks();
   if (tasks.length === 0) {
     addSample();
+  } else {
+    displayTaskList();
   }
-  displayTaskList();
 });

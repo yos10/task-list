@@ -1,4 +1,7 @@
-import * as repo from './task-list-repository.js';
+import { LocalStorage } from './LocalStorage.js';
+import { sampleData } from './sample-data.js';
+
+const repo = new LocalStorage('tasks');
 
 function createHtmlElement(html) {
   const template = document.createElement('template');
@@ -18,6 +21,7 @@ function displayTaskList() {
   removeHtmlElement('.taskrow');
 
   const tasks = repo.getTasks();
+
   for (const task of tasks) {
     const html = `
       <tr class="taskrow">
@@ -34,21 +38,9 @@ function displayTaskList() {
     td[1].textContent = task.taskstatus;
     td[2].textContent = task.tasktitle;
     td[3].textContent = task.taskdetail;
+
     document.querySelector('#tasklist').appendChild(tableRow);
   }
-}
-
-function addSample() {
-  const task = {
-    id: '1',
-    taskmonth: '2021-07',
-    taskstatus: '済',
-    tasktitle: 'A社経営統合プロジェクト',
-    taskdetail:
-      '経営統合に伴う業務プロセス統合プロジェクト。<br>プロジェクトリーダー（メンバー４人）として担当。<br>ＱＤＣ目標いずれも達成。ＣＳ評価で５をいただいた。',
-  };
-  repo.addTask(task);
-  displayTaskList();
 }
 
 // 登録ボタンを押した時
@@ -89,9 +81,10 @@ tasklist.addEventListener('click', (e) => {
 
 window.addEventListener('DOMContentLoaded', (e) => {
   const tasks = repo.getTasks();
+
   if (tasks.length === 0) {
-    addSample();
-  } else {
-    displayTaskList();
+    repo.addTask(sampleData);
   }
+
+  displayTaskList();
 });

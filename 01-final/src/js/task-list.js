@@ -1,7 +1,7 @@
-import { LocalStorage } from './LocalStorage.js';
+import { TaskRepository } from './TaskRepository.js';
 import { sampleData } from './sample-data.js';
 
-const repo = new LocalStorage('tasks');
+const taskRepository = new TaskRepository();
 
 function createHtmlElement(html) {
   const template = document.createElement('template');
@@ -12,6 +12,7 @@ function createHtmlElement(html) {
 
 function removeHtmlElement(querySelector) {
   const nodeList = document.querySelectorAll(querySelector);
+
   for (const node of nodeList) {
     node.remove();
   }
@@ -20,7 +21,7 @@ function removeHtmlElement(querySelector) {
 function displayTaskList() {
   removeHtmlElement('.taskrow');
 
-  const tasks = repo.getTasks();
+  const tasks = taskRepository.getAll();
 
   for (const task of tasks) {
     const html = `
@@ -34,10 +35,10 @@ function displayTaskList() {
     `;
     const tableRow = createHtmlElement(html);
     const td = tableRow.querySelectorAll('td');
-    td[0].textContent = task.taskmonth;
-    td[1].textContent = task.taskstatus;
-    td[2].textContent = task.tasktitle;
-    td[3].textContent = task.taskdetail;
+    td[0].textContent = task.month;
+    td[1].textContent = task.status;
+    td[2].textContent = task.title;
+    td[3].textContent = task.detail;
 
     document.querySelector('#tasklist').appendChild(tableRow);
   }
@@ -57,15 +58,23 @@ form.addEventListener('submit', (e) => {
     const elementId = element.id;
     const elementValue = element.value;
     task[elementId] = elementValue;
-
-    // 入力エリアを初期化
-    element.value = '';
   }
 
-  task['id'] = Date.now().toString();
+  form.reset();
 
-  repo.addTask(task);
+  taskRepository.add(
+    task.taskmonth,
+    task.taskstatus,
+    task.tasktitle,
+    task.taskdetail
+  );
   displayTaskList();
+});
+
+// 月ピッカーを表示
+const monthInput = document.querySelector('#taskmonth');
+monthInput.addEventListener('click', () => {
+  monthInput.showPicker();
 });
 
 // 削除ボタンを押した時
@@ -74,16 +83,23 @@ const tasklist = document.querySelector('#tasklist');
 tasklist.addEventListener('click', (e) => {
   if (e.target.matches('button')) {
     const id = e.target.dataset.id;
-    repo.deleteTask(id);
+
+    taskRepository.delete(id);
     displayTaskList();
   }
 });
 
-window.addEventListener('DOMContentLoaded', (e) => {
-  const tasks = repo.getTasks();
+// サンプルデータ表示
+window.addEventListener('DOMContentLoaded', () => {
+  const tasks = taskRepository.getAll();
 
   if (tasks.length === 0) {
-    repo.addTask(sampleData);
+    taskRepository.add(
+      sampleData.taskmonth,
+      sampleData.taskstatus,
+      sampleData.tasktitle,
+      sampleData.taskdetail
+    );
   }
 
   displayTaskList();
